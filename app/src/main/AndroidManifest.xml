@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.rongyan.hpmessage">
+
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="yunos.permission.ACCESS_CMNS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.yunos.ad.PERMISSION" />
+    <uses-permission android:name="com.yunos.ad.PERMISSION.input_caller_package" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.GET_PACKAGE_SIZE"/>
+
+    <application
+        android:name="com.rongyan.hpmessage.MessageApplication"
+        android:hardwareAccelerated="false"
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
+        android:label="@string/app"
+        android:logo="@drawable/icon"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon,android:theme,android:allowBackup" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+
+        <receiver android:name="com.yunos.cmns.CMNSMessageReceiver" >
+            <intent-filter>
+                <action android:name="com.yunos.cmns.intent.SEND_NOTIFICATION" />
+                <action android:name="com.yunos.cmns.intent.CANCEL_NOTIFICATION" />
+                <action android:name="com.yunos.cmns.intent.PASSTHROUGH" />
+                <action android:name="com.yunos.cmns.intent.NOTIFICATION_CLICKED" />
+                <action android:name="com.yunos.cmns.intent.NOTIFICATION_REMOVE" />
+                <action android:name="com.rongyan.hpmessage" /> <!-- ATTENTION: This item must be set to the package name -->
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.yunos.cmns.service.CMNSService"
+            android:exported="true"
+            android:process="com.yunos.cmns.service.remote.CMNSService" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="com.yunos.cmns.service.CMNSService" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="com.yunos.ad.cmnspush.ReportReceiver"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="com.yunos.report.action" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="com.rongyan.hpmessage"
+                    android:scheme="yunosad" /> <!-- ATTENTION: This item must be set to the package name -->
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.yunos.ad.cmnspush.NetChangeReport" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".MessageService"
+            android:exported="true" />
+
+        <receiver
+            android:name=".BootReceiver"
+            android:label="@string/app_name" >
+        </receiver>
+
+        <activity
+            android:name=".messagelist.MessageActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:icon="@drawable/icon"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.message.show" />
+            </intent-filter>
+        </activity>
+        <provider
+            android:name=".database.MessageProvider"
+            android:authorities="com.rongyan:497393102"
+            android:exported="true" />
+
+        <service
+            android:name="com.talkingdata.sdk.TDAntiCheatingService"
+            android:process="com.talkingdata.sdk.TDAntiCheatingService" > <!-- 用户质量评估Service可以配置在主进程或者单独进程 -->
+            <intent-filter>
+                <action android:name="com.talkingdata.sdk.TDAntiCheatingService" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="TD_APP_ID"
+            android:value="32C05F8DED8F42EF82350AA94A25600A" />
+        <meta-data
+            android:name="TD_CHANNEL_ID"
+            android:value="default" />
+        <meta-data
+            android:name="com.alibaba.app.appkey"
+            android:value="24526002" >
+        </meta-data>
+        <meta-data
+            android:name="com.alibaba.app.appsecret"
+            android:value="4dd68f417d50fed6277125ddbe79b28d" >
+        </meta-data>
+        <meta-data
+            android:name="ALIYUN_MAN_CHANNEL"
+            android:value="RongYan" >
+        </meta-data>
+
+        <!-- 配置APP ID -->
+        <meta-data
+            android:name="BUGLY_APPID"
+            android:value="6d736f454b" />
+        <!-- 配置APP版本号 -->
+        <meta-data
+            android:name="BUGLY_APP_VERSION"
+            android:value="1.0.5.4" />
+
+        <!-- 配置APP渠道号 -->
+        <meta-data
+            android:name="BUGLY_APP_CHANNEL"
+            android:value="RongYan" />
+        <!-- 配置Bugly调试模式（true或者false）-->
+        <meta-data
+            android:name="BUGLY_ENABLE_DEBUG"
+            android:value="false" />
+    </application>
+
+</manifest>

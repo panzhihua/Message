@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <FrameLayout 
+        android:id="@+id/item_fly"
+	    android:layout_width="match_parent"
+	    android:layout_height="80dp">
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="1dp"
+	        android:background="@color/gray_e5"
+	        android:layout_gravity="bottom"/>
+	    <ImageView
+	        android:id="@+id/item_icon_img"
+	        android:layout_width="48dp"
+	        android:layout_height="48dp"
+	        android:layout_margin="16dp" />
+	    <TextView
+	        android:id="@+id/item_title_txt"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:singleLine="true"
+	        android:ellipsize="end"
+	        android:layout_marginLeft="80dp"
+	        android:layout_marginRight="16dp"
+	        android:layout_marginTop="17dp"
+	        android:textSize="18sp"
+	        android:textStyle="bold"/>
+	    <TextView
+	        android:id="@+id/item_summary_txt"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="bottom"
+	        android:singleLine="true"
+	        android:ellipsize="end"
+	        android:layout_marginLeft="80dp"
+	        android:layout_marginRight="16dp"
+	        android:layout_marginBottom="16dp"
+	        android:textSize="16sp" />
+	    <ImageView
+	        android:id="@+id/item_redot_img"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_margin="4dp"
+	        android:layout_gravity="top|right"
+	        android:background="@drawable/redot"/>
+	</FrameLayout>
+</FrameLayout>

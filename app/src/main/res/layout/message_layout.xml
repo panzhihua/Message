@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/message_layout"
+    android:layout_width="40dp"
+    android:layout_height="48dp"
+    android:background="#ff000000" >
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/message_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/bell"/>
+
+        <LinearLayout
+            android:id="@+id/unreadlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp" >
+
+            <ImageView
+                android:id="@+id/unread_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/number_bg" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/unreadnumberlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="0dp" >
+
+            <TextView
+                android:id="@+id/unread_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8"
+                android:textColor="#ffc53929"
+                android:textSize="10sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+</FrameLayout>
