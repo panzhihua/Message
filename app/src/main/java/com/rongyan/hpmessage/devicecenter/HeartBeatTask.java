@@ -59,7 +59,7 @@ public class HeartBeatTask implements NewHttpPostUtils.CallBack{
         public void run() {
         	try{
         		device.getDevice().setNet_flow(StringUtils.getDev()+"");
-        		device.getDevice().setFire_entity_id(MessageApplication.getentityId());
+        		device.getDevice().setFire_entity_id(ApplicationUtils.getentityId());
         		device.getDevice().setMac(StringUtils.getLocalMacAddress());
         		device.getDevice().setSn(Build.SERIAL);
 	        	String packagesString = JsonUtils.beanToJson(device);

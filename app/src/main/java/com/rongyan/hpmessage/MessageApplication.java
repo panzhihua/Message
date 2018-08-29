@@ -40,8 +40,8 @@ public class MessageApplication extends Application {
 	private final static String HTTP_IP = "http://staging.huo365.cn/api/";
 //	private final static String HTTP_IP1 = "http://staging.huo365.cn/api/";
 //	private final static String HTTP_IP = "https://huo365.cn/api/";
-//	private final static String HTTP_IP_DEVICE = "http://staging-rongyan-device.huo365.cn/api/";//test evverment 
-	private final static String HTTP_IP_DEVICE="https://device.huo365.cn/api/";
+	private final static String HTTP_IP_DEVICE = "http://staging-rongyan-device.huo365.cn/api/";//test evverment
+//	private final static String HTTP_IP_DEVICE="https://device.huo365.cn/api/";
 
 	public final static String HTTP_BOOTADS_URL = HTTP_IP
 			+ "v2/ads/cash_register";// 开机广告
@@ -55,7 +55,7 @@ public class MessageApplication extends Application {
 	public final static String HTTP_BOOT_CONFIG_URL = HTTP_IP
 			+ "v1/cash_register/boot_config";// 新增四合一接口
 	
-	public final static String HTTP_STS_TOKEN_URL = HTTP_IP
+	public final static String HTTP_STS_TOKEN_URL = "https://huo365.cn/api/"
 			+ "v1/sts_token?role_type=logstore_rongyan_policy";// 获取临时token接口
 	
 	public final static String HTTP_NOTIFICATION_PUSHRECEIPT_STRING = HTTP_IP
@@ -90,10 +90,6 @@ public class MessageApplication extends Application {
 
 	public static Intent mIntent = new Intent("action.receive.newmessage");
 
-	private static String mUUID = null;// 机器唯一编码
-	private static String mFireShopId = "0";// 主收银店铺名称
-	private static String mRetailFireShopIdString = "0";// 零售店铺名称
-	private static String mOrderDeskFireShopIdString = "0";// 副收银店铺名称
 	private Handler mHandler = new Handler();
 	private static MessageApplication mApplication;
 	
@@ -256,19 +252,6 @@ public class MessageApplication extends Application {
 	}
 
 	/**
-	 * 获取UUID
-	 * 
-	 * @return UUID 值
-	 */
-
-	public static String getUUID() {
-		if (mUUID == null || mUUID.equals("0")) {
-			mUUID = getProperty("ro.aliyun.clouduuid", "0");
-		}
-		return mUUID;
-	}
-
-	/**
 	 * 获取 属性值
 	 * 
 	 * @param key
@@ -317,147 +300,4 @@ public class MessageApplication extends Application {
 		}
 		return null;
 	}
-
-	/**
-	 * 获取收银版本二维火店铺ID
-	 * 
-	 * @return
-	 */
-	public static String getentityId() {
-		try {
-			if (mFireShopId == null || mFireShopId.equals("0")) {
-				String content = ""; // 文件内容字符串
-				File file = new File("/mnt/sdcard/zmcash/system_data.txt");
-				if (file.exists()) {
-					try {
-						InputStream instream = new FileInputStream(file);
-						if (instream != null) {
-							InputStreamReader inputreader = new InputStreamReader(
-									instream);
-							BufferedReader buffreader = new BufferedReader(
-									inputreader);
-							String line;
-							// 分行读取
-							while ((line = buffreader.readLine()) != null) {
-								content += line;
-							}
-							instream.close();
-							if (!content.equals("")) {
-								SystemDataItem item = (SystemDataItem) JsonUtils
-										.jsonToBean(content, SystemDataItem.class);
-								mFireShopId = item.getEntity_id();
-							}
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-			// 如果取不到二维火店铺ENTRYID 则需要取副收银端的ENTRYID
-			if (mFireShopId == null || mFireShopId.equals("0")) {
-				mFireShopId = getOrderDeskHEntityId();
-			}
-			// 如果取不到副收银店铺ENTRYID 则需要取零售端的ENTRYID
-			if (mFireShopId == null || mFireShopId.equals("0")) {
-				mFireShopId = getRetailEntityId();
-			}
-			if (mFireShopId == null) {
-				mFireShopId = "0";
-			}
-			LogUtils.w(TAG, "mFireShopId=" + mFireShopId);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return mFireShopId;
-	}
-
-	/**
-	 * 获取零售版本二维火店铺ID
-	 * 
-	 * @return
-	 */
-
-	public static String getRetailEntityId() {
-		if (mRetailFireShopIdString == null
-				|| mRetailFireShopIdString.equals("0")) {
-			String content = ""; // 文件内容字符串
-			File file = new File(
-					"/mnt/sdcard/2dfire_retail_cashdesk/system_data.txt");
-			if (file.exists()) {
-				try {
-					InputStream instream = new FileInputStream(file);
-					if (instream != null) {
-						InputStreamReader inputreader = new InputStreamReader(
-								instream);
-						BufferedReader buffreader = new BufferedReader(
-								inputreader);
-						String line;
-						// 分行读取
-						while ((line = buffreader.readLine()) != null) {
-							content += line;
-						}
-						instream.close();
-						if (!content.equals("")) {
-							SystemDataItem item = (SystemDataItem) JsonUtils
-									.jsonToBean(content, SystemDataItem.class);
-							mRetailFireShopIdString = item.getEntity_id();
-						}
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		LogUtils.w(TAG, "mRetailFireShopIdString=" + mRetailFireShopIdString);
-		return mRetailFireShopIdString;
-	}
-	
-	/**
-	 * 获取二维火副收银店铺ID
-	 */
-	public static String getOrderDeskHEntityId() {
-		if (mOrderDeskFireShopIdString == null
-				|| mOrderDeskFireShopIdString.equals("0")) {
-			String content = ""; // 文件内容字符串
-			File file = new File(
-					"/mnt/sdcard/zm_orderDeskH/system_data.txt");
-			if (file.exists()) {
-				try {
-					InputStream instream = new FileInputStream(file);
-					if (instream != null) {
-						InputStreamReader inputreader = new InputStreamReader(
-								instream);
-						BufferedReader buffreader = new BufferedReader(
-								inputreader);
-						String line;
-						// 分行读取
-						while ((line = buffreader.readLine()) != null) {
-							content += line;
-						}
-						instream.close();
-						if (!content.equals("")) {
-							SystemDataItem item = (SystemDataItem) JsonUtils
-									.jsonToBean(content, SystemDataItem.class);
-							mOrderDeskFireShopIdString = item.getEntity_id();
-						}
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		LogUtils.w(TAG, "mOrderDeskFireShopIdString=" + mOrderDeskFireShopIdString);
-		return mOrderDeskFireShopIdString;
-	}
-	
-	 /** 获取App版本号 **/
-    public static String getAppVersion(Context context){
-        String localVersion = "";
-        try {
-            localVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return localVersion;
-    }
 }

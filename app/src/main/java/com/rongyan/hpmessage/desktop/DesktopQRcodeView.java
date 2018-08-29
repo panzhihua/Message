@@ -3,9 +3,6 @@ package com.rongyan.hpmessage.desktop;
 import com.rongyan.hpmessage.AbstractTaskView;
 import com.rongyan.hpmessage.R;
 import com.rongyan.hpmessage.item.DesktopEntrancesItem.Data.Desktop_Entries;
-import com.rongyan.hpmessage.messagelist.MessageActivity;
-import com.rongyan.hpmessage.util.LogUtils;
-import com.rongyan.hpmessage.util.StringUtils;
 
 import android.content.Context;
 import android.content.Intent;

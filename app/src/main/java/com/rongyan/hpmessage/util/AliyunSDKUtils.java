@@ -92,7 +92,7 @@ public class AliyunSDKUtils implements HttpGetUtils.CallBack{
         Log log = new Log();
         log.PutContent("type",type);
         log.PutContent("型号", Build.DISPLAY);
-        log.PutContent("版本号", MessageApplication.getAppVersion(mContext));
+        log.PutContent("版本号", ApplicationUtils.getAppVersion(mContext));
         logGroup.PutLog(log);
         try {
             PostLogRequest request = new PostLogRequest(project, logStore, logGroup);

@@ -60,10 +60,10 @@ public class NewHttpGetUtils extends Thread {
 			}else{
 				return;
 			}
-			LogUtils.w(TAG, "MessageService.mDeviceToken:"+MessageService.mDeviceToken);
-			if (MessageService.mDeviceToken != null) {
+			LogUtils.w(TAG, "MessageService.mDeviceToken:"+ApplicationUtils.mDeviceToken);
+			if (ApplicationUtils.mDeviceToken != null) {
 				connection.addRequestProperty("message-device-token",
-						MessageService.mDeviceToken);
+						ApplicationUtils.mDeviceToken);
 			}
 			if(ApplicationUtils.getmBROKER()!=null&&!ApplicationUtils.getmBROKER().equals("")) {
 				connection.setRequestProperty("device-broker",

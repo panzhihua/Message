@@ -61,7 +61,6 @@ public class MessageService extends Service {
 	private ShowWindowObserver mShowWindowObserver;
 	private DataBaseObserver mDataBaseObserver;
 	private MessageReceiptOprea mMessageReceiptOprea;
-	public static String mDeviceToken = null;// 云箭产生的唯一编码
 	private DeviceCfg mDeviceCfg;
 	private UsbOpera mUsbOpera;
 	private SettingsTask mSettingsTask=null;
@@ -140,9 +139,9 @@ public class MessageService extends Service {
 								LogUtils.w(TAG, "errorCode:"
 										+ errorCode);
 								if (errorCode == 0) {
-									mDeviceToken = token;
+									ApplicationUtils.mDeviceToken = token;
 									LogUtils.w(TAG, "mDeviceToken:"
-											+ mDeviceToken);							
+											+ ApplicationUtils.mDeviceToken);
 								}
 							}
 						});
@@ -152,7 +151,7 @@ public class MessageService extends Service {
 
 	public void updateDoEverything() {
 		{
-			if (mDeviceToken == null) {
+			if (ApplicationUtils.mDeviceToken == null) {
 				getDeviceToken();// 获取devicetoken
 			}
 		}

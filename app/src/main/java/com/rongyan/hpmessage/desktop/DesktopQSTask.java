@@ -9,11 +9,12 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 
 import com.rongyan.hpmessage.*;
-import com.rongyan.hpmessage.item.BootConfigItem;
 import com.rongyan.hpmessage.item.DesktopEntrancesItem;
-import com.rongyan.hpmessage.item.DesktopQRcodeResponseItem;
-import com.rongyan.hpmessage.item.DesktopEntrancesItem.Data.Desktop_Entries;
-import com.rongyan.hpmessage.util.*;
+import com.rongyan.hpmessage.util.ApplicationUtils;
+import com.rongyan.hpmessage.util.CacheUtils;
+import com.rongyan.hpmessage.util.JsonUtils;
+import com.rongyan.hpmessage.util.LogUtils;
+import com.rongyan.hpmessage.util.MyBitmapUtils;
 
 public class DesktopQSTask extends AbstractTask implements
 		ShowWindowObserver.CallBack {
@@ -65,7 +66,7 @@ public class DesktopQSTask extends AbstractTask implements
 			DesktopEntrancesItem item = (DesktopEntrancesItem) JsonUtils
 					.jsonToBean(value, DesktopEntrancesItem.class);
 			if (item.getSuccess() && item.getData() != null&&item.getData().getDesktop_entries()!=null&&!item.getData().getDesktop_entries().isEmpty()) {
-				for(final Desktop_Entries desktop_entries:item.getData().getDesktop_entries()){
+				for(final DesktopEntrancesItem.Data.Desktop_Entries desktop_entries:item.getData().getDesktop_entries()){
 					final String imageurl = desktop_entries.getIcon_url();
 					LogUtils.w(TAG, "desktop imageurl :" + imageurl);
 					if (imageurl != null && !imageurl.isEmpty()) {
@@ -215,8 +216,8 @@ public class DesktopQSTask extends AbstractTask implements
 			if (mBitmap != null) {
 				String value=CacheUtils.getString(mContext, "Desktop");
 				if(value!=null&&!value.equals("")){
-					Desktop_Entries item = (Desktop_Entries) JsonUtils
-							.jsonToBean(value, Desktop_Entries.class);
+					DesktopEntrancesItem.Data.Desktop_Entries item = (DesktopEntrancesItem.Data.Desktop_Entries) JsonUtils
+							.jsonToBean(value, DesktopEntrancesItem.Data.Desktop_Entries.class);
 					mDesktopQRcodeView.setImageView(mBitmap,item);
 					localimagePointString=value;
 				}else{

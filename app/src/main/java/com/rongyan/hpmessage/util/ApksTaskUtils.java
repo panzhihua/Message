@@ -475,6 +475,7 @@ public class ApksTaskUtils implements NewHttpGetUtils.CallBack,NewHttpPostUtils.
     public void setPostResponseData(String value) {
         LogUtils.w(TAG,value);
         num=0;
+        AliyunSDKUtils.getInstance(mContext).putLogTst("[CMNS_CALLBACK_DATA]"+value,2);
     	if(isBroadCast) {
             mContext.unregisterReceiver(mBroadcastReceiver);
             isBroadCast = false;

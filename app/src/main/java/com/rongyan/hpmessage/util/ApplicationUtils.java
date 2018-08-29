@@ -1,8 +1,14 @@
 package com.rongyan.hpmessage.util;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 
 import com.rongyan.hpmessage.item.Apps;
+import com.rongyan.hpmessage.item.SystemDataItem;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -28,9 +34,9 @@ public class ApplicationUtils {
 	
 	public static int heartbeat_duration=0;// 新接口数据上报的间隔
 	
-	private static String mUUID = "";// 机器唯一编码
+	public static String mUUID = "";// 机器唯一编码
 
-    private static String mDeviceToken="";//devicetoken
+	public static String mDeviceToken=null;//devicetoken
 
     private static String mBROKER = "";//渠道商代码，如 二维火 -> EWH
 
@@ -38,8 +44,16 @@ public class ApplicationUtils {
 
     private static String mVERSION = "";//软件版本
 
+	private static String mFireShopId = "0";// 主收银店铺名称
+
+	private static String mRetailFireShopIdString = "0";// 零售店铺名称
+
+	private static String mOrderDeskFireShopIdString = "0";// 副收银店铺名称
+
 	private Context mContext;
+
 	private SharedPreferences mPreferences;
+
 	private static ApplicationUtils mApplicationUtils;
 	
 	public static ApplicationUtils getIntance(Context context){
@@ -205,6 +219,138 @@ public class ApplicationUtils {
             return value;
         }
     }
+
+	/**
+	 * 获取收银版本二维火店铺ID
+	 *
+	 * @return
+	 */
+	public static String getentityId() {
+		try {
+			if (mFireShopId == null || mFireShopId.equals("0")) {
+				String content = ""; // 文件内容字符串
+				File file = new File("/mnt/sdcard/zmcash/system_data.txt");
+				if (file.exists()) {
+					try {
+						InputStream instream = new FileInputStream(file);
+						if (instream != null) {
+							InputStreamReader inputreader = new InputStreamReader(
+									instream);
+							BufferedReader buffreader = new BufferedReader(
+									inputreader);
+							String line;
+							// 分行读取
+							while ((line = buffreader.readLine()) != null) {
+								content += line;
+							}
+							instream.close();
+							if (!content.equals("")) {
+								SystemDataItem item = (SystemDataItem) JsonUtils
+										.jsonToBean(content, SystemDataItem.class);
+								mFireShopId = item.getEntity_id();
+							}
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			// 如果取不到二维火店铺ENTRYID 则需要取副收银端的ENTRYID
+			if (mFireShopId == null || mFireShopId.equals("0")) {
+				mFireShopId = getOrderDeskHEntityId();
+			}
+			// 如果取不到副收银店铺ENTRYID 则需要取零售端的ENTRYID
+			if (mFireShopId == null || mFireShopId.equals("0")) {
+				mFireShopId = getRetailEntityId();
+			}
+			if (mFireShopId == null) {
+				mFireShopId = "0";
+			}
+			LogUtils.w(TAG, "mFireShopId=" + mFireShopId);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return mFireShopId;
+	}
+
+	/**
+	 * 获取零售版本二维火店铺ID
+	 *
+	 * @return
+	 */
+
+	public static String getRetailEntityId() {
+		if (mRetailFireShopIdString == null
+				|| mRetailFireShopIdString.equals("0")) {
+			String content = ""; // 文件内容字符串
+			File file = new File(
+					"/mnt/sdcard/2dfire_retail_cashdesk/system_data.txt");
+			if (file.exists()) {
+				try {
+					InputStream instream = new FileInputStream(file);
+					if (instream != null) {
+						InputStreamReader inputreader = new InputStreamReader(
+								instream);
+						BufferedReader buffreader = new BufferedReader(
+								inputreader);
+						String line;
+						// 分行读取
+						while ((line = buffreader.readLine()) != null) {
+							content += line;
+						}
+						instream.close();
+						if (!content.equals("")) {
+							SystemDataItem item = (SystemDataItem) JsonUtils
+									.jsonToBean(content, SystemDataItem.class);
+							mRetailFireShopIdString = item.getEntity_id();
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		LogUtils.w(TAG, "mRetailFireShopIdString=" + mRetailFireShopIdString);
+		return mRetailFireShopIdString;
+	}
+
+	/**
+	 * 获取二维火副收银店铺ID
+	 */
+	public static String getOrderDeskHEntityId() {
+		if (mOrderDeskFireShopIdString == null
+				|| mOrderDeskFireShopIdString.equals("0")) {
+			String content = ""; // 文件内容字符串
+			File file = new File(
+					"/mnt/sdcard/zm_orderDeskH/system_data.txt");
+			if (file.exists()) {
+				try {
+					InputStream instream = new FileInputStream(file);
+					if (instream != null) {
+						InputStreamReader inputreader = new InputStreamReader(
+								instream);
+						BufferedReader buffreader = new BufferedReader(
+								inputreader);
+						String line;
+						// 分行读取
+						while ((line = buffreader.readLine()) != null) {
+							content += line;
+						}
+						instream.close();
+						if (!content.equals("")) {
+							SystemDataItem item = (SystemDataItem) JsonUtils
+									.jsonToBean(content, SystemDataItem.class);
+							mOrderDeskFireShopIdString = item.getEntity_id();
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		LogUtils.w(TAG, "mOrderDeskFireShopIdString=" + mOrderDeskFireShopIdString);
+		return mOrderDeskFireShopIdString;
+	}
     
     /**
      * 判断是否有下载空间

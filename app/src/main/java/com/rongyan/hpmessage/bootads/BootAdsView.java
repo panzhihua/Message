@@ -433,10 +433,10 @@ public class BootAdsView extends AbstractTaskView{
 					mContext, url, null);
 			HashMap<String, String> map = new HashMap<String, String>();
 			map.put("sn_no", Build.SERIAL);
-			map.put("uuid", MessageApplication.getUUID());
-			map.put("device_token", MessageService.mDeviceToken);
+			map.put("uuid", ApplicationUtils.getUUID());
+			map.put("device_token", ApplicationUtils.mDeviceToken);
 			map.put("fire_shop_no",
-					MessageApplication.getentityId());
+					ApplicationUtils.getentityId());
 			map.put("actived_at",
 					ApplicationUtils
 							.getIntance(mContext)

@@ -104,4 +104,8 @@ public abstract class AbstractTask {
 			mBitmap = null;
 		}
 	}
+
+	public void recycle(Bitmap bitmap){
+		bitmap.recycle();
+	}
 }

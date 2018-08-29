@@ -80,9 +80,9 @@ public class NewHttpPostUtils extends Thread {
 			}else{
 				return;
 			}
-			if (MessageService.mDeviceToken != null) {
+			if (ApplicationUtils.mDeviceToken != null) {
 				urlConnection.addRequestProperty("message-device-token",
-						MessageService.mDeviceToken);
+						ApplicationUtils.mDeviceToken);
 			}
 			if(ApplicationUtils.getmBROKER()!=null&&!ApplicationUtils.getmBROKER().equals("")) {
 				urlConnection.setRequestProperty("device-broker",

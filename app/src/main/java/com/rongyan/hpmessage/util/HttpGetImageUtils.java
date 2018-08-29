@@ -56,16 +56,16 @@ public class HttpGetImageUtils implements Runnable {
 					if (!Build.SERIAL.equals("unknown")) {
 						httpURLConnection.addRequestProperty("RONGYAN-sn-no", Build.SERIAL);
 					}
-					if (!MessageApplication.getUUID().equals("")) {
+					if (!ApplicationUtils.getUUID().equals("")) {
 						httpURLConnection.addRequestProperty("RONGYAN-uuid",
-								MessageApplication.getUUID());
+								ApplicationUtils.getUUID());
 					}
-					if (MessageService.mDeviceToken != null) {
+					if (ApplicationUtils.mDeviceToken != null) {
 						httpURLConnection.addRequestProperty("RONGYAN-devicetoken",
-								MessageService.mDeviceToken);
+								ApplicationUtils.mDeviceToken);
 					}
 					httpURLConnection.setRequestProperty("RONGYAN-fire-shop-no",
-							MessageApplication.getentityId());
+							ApplicationUtils.getentityId());
 					httpURLConnection.setRequestProperty("RONGYAN-model-version", Build.MODEL);
 					httpURLConnection.setRequestProperty("RONGYAN-android-version",
 							Build.VERSION.RELEASE);

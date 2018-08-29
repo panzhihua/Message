@@ -114,13 +114,9 @@ public class BootAdsTask extends AbstractTask implements ShowWindowObserver.Call
 												mAdsItem.setNumber(0);
 												mDataBaseOpenHelper.AddAds(mAdsItem);
 											}
-//											mHandler.post(new Runnable() {
-//												@Override
-//												public void run() {
-													nBootAdsView.setImageViewList(imageurl,  ads);//设置图片
-													setNum(true,true);
-//												}
-//											});
+											recycle(bitmap);
+											nBootAdsView.setImageViewList(imageurl,  ads);//设置图片
+											setNum(true,true);
 										}else{
 											setNum(false,true);
 										}
@@ -396,6 +392,7 @@ public class BootAdsTask extends AbstractTask implements ShowWindowObserver.Call
 												mAdsItem.setNumber(0);
 												mDataBaseOpenHelper.AddAds(mAdsItem);
 											}
+											recycle(bitmap);
 											nBootAdsView.setImageViewList(imageurl,  ads);//设置图片
 											setNum(true,true);
 										}else{

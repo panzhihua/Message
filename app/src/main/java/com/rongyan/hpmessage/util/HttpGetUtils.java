@@ -77,16 +77,16 @@ public class HttpGetUtils implements Runnable {
 			if (!Build.SERIAL.equals("unknown")) {
 				connection.addRequestProperty("RONGYAN-sn-no", Build.SERIAL);
 			}
-			if (!MessageApplication.getUUID().equals("")) {
+			if (!ApplicationUtils.getUUID().equals("")) {
 				connection.addRequestProperty("RONGYAN-uuid",
-						MessageApplication.getUUID());
+						ApplicationUtils.getUUID());
 			}
-			if (MessageService.mDeviceToken != null) {
+			if (ApplicationUtils.mDeviceToken != null) {
 				connection.addRequestProperty("RONGYAN-devicetoken",
-						MessageService.mDeviceToken);
+						ApplicationUtils.mDeviceToken);
 			}
 			connection.setRequestProperty("RONGYAN-fire-shop-no",
-					MessageApplication.getentityId());
+					ApplicationUtils.getentityId());
 			connection.setRequestProperty("RONGYAN-model-version", Build.MODEL);
 			connection.setRequestProperty("RONGYAN-android-version",
 					Build.VERSION.RELEASE);

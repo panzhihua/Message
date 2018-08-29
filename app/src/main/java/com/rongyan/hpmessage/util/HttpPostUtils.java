@@ -80,16 +80,16 @@ public class HttpPostUtils implements Runnable {
 			if (!Build.SERIAL.equals("unknown")) {
 				urlConnection.addRequestProperty("RONGYAN-sn-no", Build.SERIAL);
 			}
-			if (!MessageApplication.getUUID().equals("")) {
+			if (!ApplicationUtils.getUUID().equals("")) {
 				urlConnection.addRequestProperty("RONGYAN-uuid",
-						MessageApplication.getUUID());
+						ApplicationUtils.getUUID());
 			}
-			if (MessageService.mDeviceToken != null) {
+			if (ApplicationUtils.mDeviceToken != null) {
 				urlConnection.addRequestProperty("RONGYAN-devicetoken",
-						MessageService.mDeviceToken);
+						ApplicationUtils.mDeviceToken);
 			}
 			urlConnection.setRequestProperty("RONGYAN-fire-shop-no",
-					MessageApplication.getentityId());
+					ApplicationUtils.getentityId());
 			urlConnection.setRequestProperty("RONGYAN-model-version",
 					Build.MODEL);
 			urlConnection.setRequestProperty("RONGYAN-android-version",
