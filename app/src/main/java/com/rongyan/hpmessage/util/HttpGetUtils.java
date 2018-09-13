@@ -24,19 +24,23 @@ public class HttpGetUtils implements Runnable {
 
 	private final static String TAG="HttpGetUtils";
 
-	String mURL;
-	String mData;
-	AbstractTask mAbstractTask;
-	Handler mHandler;
-	CallBack mCallBack;
-	String mType;
-	String mTime;
+	private String mURL;
 
-	public abstract interface CallBack {
+	private AbstractTask mAbstractTask;
 
-		public abstract void setFailedResponse();
+	private Handler mHandler;
+
+	private CallBack mCallBack;
+
+	private String mType;
+
+	private String mTime;
+
+	public interface CallBack {
+
+		void setFailedResponse();
 		
-		public abstract void setResponseData(String value,String type,String time);
+		void setResponseData(String value,String type,String time);
 	}
 
 	public HttpGetUtils(AbstractTask task, String url, Handler handler) {
@@ -73,9 +77,8 @@ public class HttpGetUtils implements Runnable {
 			connection.setReadTimeout(20000);
 			connection.setConnectTimeout(20000);
 			connection.setUseCaches(true);
-			LogUtils.w(TAG, "sn:" + Build.SERIAL);
-			if (!Build.SERIAL.equals("unknown")) {
-				connection.addRequestProperty("RONGYAN-sn-no", Build.SERIAL);
+			if(ApplicationUtils.getmSN()!=null&&!ApplicationUtils.getmSN().equals("")){
+				connection.addRequestProperty("RONGYAN-sn-no", ApplicationUtils.getmSN());
 			}
 			if (!ApplicationUtils.getUUID().equals("")) {
 				connection.addRequestProperty("RONGYAN-uuid",

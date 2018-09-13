@@ -23,17 +23,23 @@ import android.os.Handler;
 
 @SuppressLint("NewApi")
 public class HttpPostUtils implements Runnable {
+
 	private final static String TAG="HttpPostUtils";
-	String mData = null;
+
+	private String mData = null;
+
 	private Handler mHandler;
+
 	private String mURL;
-	AbstractTask mAbstractTask;
-	CallBack mCallBack;
 
-	public abstract interface CallBack {
-		public abstract void setResponseData(String value);
+	private AbstractTask mAbstractTask;
 
-		public abstract void setFailedMessage();
+	private CallBack mCallBack;
+
+	public interface CallBack {
+		void setResponseData(String value);
+
+		void setFailedMessage();
 	}
 	
 	public HttpPostUtils(String data, Handler handler, String url,
@@ -76,9 +82,8 @@ public class HttpPostUtils implements Runnable {
 			urlConnection.setRequestProperty("Connection", "close");
 			urlConnection.setRequestProperty("Content-Length",
 					String.valueOf(postDataLength));
-			LogUtils.w(TAG, "sn:" + Build.SERIAL);
-			if (!Build.SERIAL.equals("unknown")) {
-				urlConnection.addRequestProperty("RONGYAN-sn-no", Build.SERIAL);
+			if(ApplicationUtils.getmSN()!=null&&!ApplicationUtils.getmSN().equals("")){
+				urlConnection.addRequestProperty("RONGYAN-sn-no", ApplicationUtils.getmSN());
 			}
 			if (!ApplicationUtils.getUUID().equals("")) {
 				urlConnection.addRequestProperty("RONGYAN-uuid",

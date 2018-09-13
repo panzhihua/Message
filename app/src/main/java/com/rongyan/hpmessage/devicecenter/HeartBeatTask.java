@@ -61,7 +61,7 @@ public class HeartBeatTask implements NewHttpPostUtils.CallBack{
         		device.getDevice().setNet_flow(StringUtils.getDev()+"");
         		device.getDevice().setFire_entity_id(ApplicationUtils.getentityId());
         		device.getDevice().setMac(StringUtils.getLocalMacAddress());
-        		device.getDevice().setSn(Build.SERIAL);
+        		device.getDevice().setSn(ApplicationUtils.getmSN());
 	        	String packagesString = JsonUtils.beanToJson(device);
 	        	AliyunSDKUtils.getInstance(mContext).putLogTst("[HeartBeat]"+packagesString,1);
 	 	    	LogUtils.w(TAG, packagesString);

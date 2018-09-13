@@ -33,6 +33,8 @@ public class ApplicationUtils {
 	public static int report_duration=0;// 数据上报的间隔
 	
 	public static int heartbeat_duration=0;// 新接口数据上报的间隔
+
+	public static String mSN = "";// 机器唯一编码
 	
 	public static String mUUID = "";// 机器唯一编码
 
@@ -183,17 +185,31 @@ public class ApplicationUtils {
 	public static void setmVERSION(String mVERSION) {
 		ApplicationUtils.mVERSION = mVERSION;
 	}
-	 
-	 /**
+
+	public static String getmSN() {
+		return mSN;
+	}
+
+	public static void setmSN(String mSN) {
+		ApplicationUtils.mSN = mSN;
+	}
+
+	/**
      * 获取UUID
      */
-
     public static String getUUID() {
         if (mUUID == null || mUUID.equals("0")|| mUUID.equals("")) {
             mUUID = getProperty("ro.aliyun.clouduuid", "0");
         }
         return mUUID;
     }
+
+	/**
+	 * 获取SN
+	 */
+	public static String getSN() {
+		return getProperty("gsm.serial", "0");
+	}
 
     /**
      * 获取 属性值

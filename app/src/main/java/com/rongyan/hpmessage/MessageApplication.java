@@ -228,6 +228,11 @@ public class MessageApplication extends Application {
             ApplicationUtils.setmBROKER(strArray[1]);
             ApplicationUtils.setmMODEL(strArray[2]);
             ApplicationUtils.setmVERSION(strArray[3]);
+            if("HD01".equals(strArray[2])){
+				ApplicationUtils.setmSN(ApplicationUtils.getSN());
+			}else{
+				ApplicationUtils.setmSN(Build.SERIAL);
+			}
         }catch(Exception e){
             e.printStackTrace();
         }

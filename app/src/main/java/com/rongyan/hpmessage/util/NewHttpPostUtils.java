@@ -75,8 +75,8 @@ public class NewHttpPostUtils extends Thread {
 			urlConnection.setUseCaches(false);
 			urlConnection.setDoInput(true);
 			urlConnection.setDoOutput(true);
-			if(Build.SERIAL!=null&&!Build.SERIAL.equals("")){
-				urlConnection.addRequestProperty("device-sn", Build.SERIAL);
+			if(ApplicationUtils.getmSN()!=null&&!ApplicationUtils.getmSN().equals("")){
+				urlConnection.addRequestProperty("device-sn", ApplicationUtils.getmSN());
 			}else{
 				return;
 			}

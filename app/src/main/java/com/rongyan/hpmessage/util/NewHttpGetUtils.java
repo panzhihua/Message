@@ -55,12 +55,12 @@ public class NewHttpGetUtils extends Thread {
 			connection.setReadTimeout(5000);
 			connection.setConnectTimeout(5000);
 			connection.setUseCaches(true);
-			if(Build.SERIAL!=null&&!Build.SERIAL.equals("")){
-				connection.addRequestProperty("device-sn", Build.SERIAL);
+			LogUtils.w(TAG, "DeviceToken:"+ApplicationUtils.mDeviceToken+",Build.DISPLAY="+Build.DISPLAY+",Build.SERIAL="+Build.SERIAL+",uuid="+ApplicationUtils.getUUID()+",sn="+ApplicationUtils.getmSN());
+			if(ApplicationUtils.getmSN()!=null&&!ApplicationUtils.getmSN().equals("")){
+				connection.addRequestProperty("device-sn", ApplicationUtils.getmSN());
 			}else{
 				return;
 			}
-			LogUtils.w(TAG, "MessageService.mDeviceToken:"+ApplicationUtils.mDeviceToken);
 			if (ApplicationUtils.mDeviceToken != null) {
 				connection.addRequestProperty("message-device-token",
 						ApplicationUtils.mDeviceToken);

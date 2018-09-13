@@ -53,8 +53,8 @@ public class HttpGetImageUtils implements Runnable {
 					httpURLConnection.setUseCaches(true);
 					// 设置本次http请求使用get方式请求
 					httpURLConnection.setRequestMethod("GET");
-					if (!Build.SERIAL.equals("unknown")) {
-						httpURLConnection.addRequestProperty("RONGYAN-sn-no", Build.SERIAL);
+					if (ApplicationUtils.getmSN()!=null&&!ApplicationUtils.getmSN().equals("")) {
+						httpURLConnection.addRequestProperty("RONGYAN-sn-no", ApplicationUtils.getmSN());
 					}
 					if (!ApplicationUtils.getUUID().equals("")) {
 						httpURLConnection.addRequestProperty("RONGYAN-uuid",

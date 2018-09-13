@@ -45,12 +45,12 @@ public class AliyunSDKUtils implements HttpGetUtils.CallBack{
     public String project = "rongyan";
 
     public String logStore = "notification";
-
-    public String uuid=null;
     
     private boolean isPut=false;
     
     private LinkedBlockingQueue<StsItem> queue = new LinkedBlockingQueue<>();
+
+    private int failuresNum=1;//获取token失败次数
 
     private static volatile AliyunSDKUtils aliyunsdkutils;
 
@@ -119,13 +119,13 @@ public class AliyunSDKUtils implements HttpGetUtils.CallBack{
         }
     }
     
-    public void startTimer(String type,String time) {
+    public void startTimer(String type,String time,int delay) {
         if (ApplicationUtils.ismNetWorkEnable()){
             if (mStsTokenTimer != null) {
             	mStsTokenTimer.cancel();
             }
             mStsTokenTimer = new Timer();
-            mStsTokenTimer.schedule(new StsToken(type,time),0);
+            mStsTokenTimer.schedule(new StsToken(type,time),delay);
         }
 	}
     
@@ -177,10 +177,6 @@ public class AliyunSDKUtils implements HttpGetUtils.CallBack{
             return;
         }
         isPut=true;
-//        String sts_ak = "STS.NHsTexCMsVcQWZt15MzRxmbJq";
-//        String sts_sk = "6BPZG2V9NC2ZASpbMdY2GBMyavFu2jW8mcD6LPZwaitF";
-//        String sts_token ="CAIS4gJ1q6Ft5B2yfSjIr4vGH9/MrpJS4aG6VXzF1TUYdt1Ugqfhkzz2IHxPfXBqBu0bsvQ+lGFZ5/oclr53TJBeWUveYPx56JhN9gKtVJLGv82+/OSgWAYiuSzBZSTg1er+Ps86JbG0I4VgAjKpvyt3xqSAM1fGdle5MJqPpId6Z9AMJGeRZiZHA9EkWGkerMgVZ0PWLuqJNRHRnm3KAW5vtREGjQEZ06mkxdCG4RfzlUDzzvRvx778OZ+5dcJhTq8ddd6+x75ycaWT2ygV6xFM+7V2i7EWoGue4IjMWAEBvU3cY7ONro93Ngh7a6MmXK5Zq+Dh0OZ5puGUk4P40ApKJ+wSUznYXJ3lyc3IAuSoOvRBLOqiZS2ciYjfaMGv41p9PUh2bl0aJ4ATTVZrEgEpRz3gLauqxUvHeA/LSdLejPpviMAqkgi0rYvadgneH+uDsykfNtonYlk2OgQGZ/ZEtBXu2WYagAGv9SICfbbcJTXa/9NdPQg0c8k+HDWqj28T9fJOn3vCE0ML0a2UVzVcxo3pSJCAGK5JXSZH4tBggl+kuhsj+6FdJYWnxvKDyIerX9VXh+VB1bIN/mknabE20zXdMk4aEY9edjvLIcI60yFZCr8eggpqF1JFoRnhgO8eiTB+0F8ZNg==";
-//        String time ="1531390516";
         long difference_time=0;
         if(time!=null&&!time.equals("")){
             difference_time=StringUtils.getSystemTime()-Long.valueOf(time);
@@ -188,15 +184,12 @@ public class AliyunSDKUtils implements HttpGetUtils.CallBack{
         if(sts_ak!=null&&!sts_ak.equals("")&&sts_sk!=null&&!sts_sk.equals("")&&sts_token!=null&&!sts_token.equals("")&&difference_time<0){
             asyncUploadLog(sts_ak,sts_sk,sts_token, times,type);
         }else{
-        	startTimer(type,times);
+            int delay=failuresNum*10*1000;
+            if(delay>60*60*1000){
+                delay=60*60*1000;
+            }
+        	startTimer(type,times,delay);
         }
-    }
-    
-    public static boolean isDebug(){
-        boolean isDebug = mContext.getApplicationInfo()!=null&&
-                (mContext.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)!=0;
-        return isDebug;
-
     }
 
 	@Override
@@ -211,12 +204,12 @@ public class AliyunSDKUtils implements HttpGetUtils.CallBack{
                 mCache.put("STS_TOKEN",item.getData().getSecurity_token());
                 mCache.put("TIME",String.valueOf(item.getData().getExpiration()));
                 mCache.put("LEVEL",item.getData().getLog_level());
-                LogUtils.w(TAG,"STS_AK:"+item.getData().getAccess_key_id()+"STS_SK:"+item.getData().getAccess_key_secret()+"STS_TOKEN:"+item.getData().getSecurity_token()+"LEVEL:"+item.getData().getLog_level());
                 asyncUploadLog(item.getData().getAccess_key_id(),item.getData().getAccess_key_secret(),item.getData().getSecurity_token(),time,type);
             }
 		}catch(Exception e){
-			 isPut=false;
-			 putSts();
+            failuresNum++;
+            isPut=false;
+            putSts();
 			LogUtils.w(TAG, e.toString());
 			e.printStackTrace();
 		}
@@ -225,8 +218,9 @@ public class AliyunSDKUtils implements HttpGetUtils.CallBack{
 
 	@Override
 	public void setFailedResponse() {
-		 isPut=false;
-		 putSts();
+        isPut=false;
+        failuresNum++;
+        putSts();
 		LogUtils.w(TAG, "setFailedResponse");
 	}
 	
