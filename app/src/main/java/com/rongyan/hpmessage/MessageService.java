@@ -85,21 +85,17 @@ public class MessageService extends Service {
 					}
 					NetworkInfo wifiInfo = mConManager
 							.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-					NetworkInfo ethInfo = mConManager
-							.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET);
-					if(wifiInfo!=null&&ethInfo!=null){
-						if (wifiInfo.isConnected() || ethInfo.isConnected()) {
-							ApplicationUtils.setmNetWorkEnable(true);
-							if (wifiInfo.isConnected()) {
-								mDeviceCfg.setEthernetEable(0);
-							} else {
-								mDeviceCfg.setEthernetEable(1);
-							}
-							updateDoEverything();
-						} else {
-							ApplicationUtils.setmNetWorkEnable(false);
+					if (ApplicationUtils.isNetworkAvailable(getApplicationContext())) {
+						ApplicationUtils.setmNetWorkEnable(true);
+						if (wifiInfo!=null&&wifiInfo.isConnected()) {
 							mDeviceCfg.setEthernetEable(0);
+						} else {
+							mDeviceCfg.setEthernetEable(1);
 						}
+						updateDoEverything();
+					} else {
+						ApplicationUtils.setmNetWorkEnable(false);
+						mDeviceCfg.setEthernetEable(0);
 					}
 				}else if (action.equals(ACTION_NEW_APPLICATION)) {
 					new AppSysncThread(context, intent.getStringExtra(KEY)).start();
